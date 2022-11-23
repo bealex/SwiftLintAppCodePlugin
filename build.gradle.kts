@@ -34,12 +34,17 @@ kotlin {
 // Configure Gradle IntelliJ Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
     pluginName.set(properties("pluginName"))
-    version.set(properties("platformVersion"))
+//    version.set(properties("platformVersion"))
     type.set(properties("platformType"))
+    localPath.set("/Applications/AppCode.app/Contents/")
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
 }
+
+//runIde {
+//    ideDir.set("/Applications/AppCode.app/Contents/")
+//}
 
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
 changelog {

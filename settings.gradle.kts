@@ -1,1 +1,8 @@
-rootProject.name = "SwiftLintAppCodePlugin"
+rootProject.name = "SwiftLint"
+
+//pluginManagement {
+//    repositories {
+//        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+//        gradlePluginPortal()
+//    }
+//}

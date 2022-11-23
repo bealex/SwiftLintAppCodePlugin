@@ -1,18 +1,98 @@
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.bealex.swiftlintappcodeplugin</id>
-    <name>IntelliJ Platform Plugin SwiftLintAppCodePlugin</name>
-    <vendor>bealex</vendor>
+    <module value="com.lonelybytes.swiftlint"/>
 
-    <depends>com.intellij.modules.platform</depends>
+    <id>com.appcodeplugins.swiftlint</id>
+
+    <name>SwiftLint</name>
+    <version>1.14.0</version>
+    <vendor email="alex@lonelybytes.com" url="https://github.com/bealex/SwiftLintAppCode">Alexander Babaev</vendor>
+
+    <description><![CDATA[
+    <p>Shows errors and warnings from SwiftLint, a tool to enforce Swift style and conventions.
+    "Autocorrect" function fixes lint errors (using SwiftLint autocorrect) in all files.</p>
+    <p>How to install this plugin:
+    <a href='https://github.com/bealex/SwiftLintAppCode#install'>https://github.com/bealex/SwiftLintAppCode#install</a>
+    </p>
+    <p>Created by Alexander Babaev, Stanislav Dombrovsky</p>
+    ]]></description>
+
+    <change-notes>
+        <![CDATA[
+        <p>1.14.0</p>
+        <ul>
+          <li>Fixed autocorrect action</li>
+        </ul>
+        <p>1.13.8</p>
+        <ul>
+          <li>Removed a warning</li>
+        </ul>
+        <p>1.13.7</p>
+        <ul>
+          <li>Documentation updated (thanks to https://github.com/mleonhard)</li>
+          <li>Restored work in CLion 2021</li>
+        </ul>
+        <p>1.13.6</p>
+        <ul>
+          <li>Fixed comments autocompletion (again)</li>
+          <li>Fixed problem when SwiftLint did not run if other errors are present in the file.</li>
+        </ul>
+        <p>1.13.4, 1.13.5</p>
+        <ul>
+          <li>Fixed comments autocompletion</li>
+          <li>Fixed problem with configuration file searching in projects with Swift Package Manager and with multiple projects opened.</li>
+        </ul>
+        <p>1.13.3</p>
+        <ul>
+          <li>Fixed problem with not using configuration file right after it was added (file change needed previously).</li>
+        </ul>
+        <p>1.13.2</p>
+        <ul>
+          <li>Fixed problem with inspection enabling/disabling.</li>
+          <li>Fixed problem with configuration reloading.</li>
+        </ul>
+        <p>1.13.1</p>
+        <ul>
+          <li>Fixed problem with configuration file search.</li>
+        </ul>
+        <p>1.13.0</p>
+        <ul>
+          <li>Removed config file specification from command line arguments. This will allow using nested configurations and other SwiftLint configuration options.</li>
+          <li>Switched to Kotlin.</li>
+          <li>Added basic completion for SwiftLint comments. Thanks to https://github.com/MontakOleg.</li>
+          <li>Updated per-project configuration.</li>
+        </ul>
+        <p>1.12.0</p>
+        <ul>
+          <li>Added per-project swiftlint path configuration. Thanks to https://github.com/MontakOleg.</li>
+        </ul>
+        <p>1.11.0</p>
+        <ul>
+          <li>Added ability to use separate configuration files in different project directories.</li>
+        </ul>
+        <p>1.10.6</p>
+        <ul>
+          <li>Minor fixes.</li>
+        </ul>
+        <p>1.10.5</p>
+        <ul>
+          <li>CLion support.</li>
+        </ul>
+      ]]>
+    </change-notes>
+
+    <idea-version since-build="203"/>
+
+    <depends>com.intellij.appcode</depends>
+    <depends>com.intellij.cidr.lang</depends>
+    <depends>com.intellij.swift.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.bealex.swiftlintappcodeplugin.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.bealex.swiftlintappcodeplugin.services.MyProjectService"/>
+        <globalInspection displayName="SwiftLint" groupName="Swift" implementationClass="com.lonelybytes.swiftlint.SwiftLintInspection"/>
+        <projectConfigurable instance="com.lonelybytes.swiftlint.Configuration" displayName="SwiftLint" groupId="tools"/>
+        <externalAnnotator language="Swift" implementationClass="com.lonelybytes.swiftlint.annotator.SwiftLintHighlightingAnnotator"/>
+        <completion.contributor language="Swift" implementationClass="com.lonelybytes.swiftlint.completion.SwiftLintCompletionContributor" />
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.bealex.swiftlintappcodeplugin.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+    <projectListeners>
+        <listener class="com.lonelybytes.swiftlint.fileWatcher.ConfigurationFileWatcher" topic="com.intellij.openapi.vfs.newvfs.BulkFileListener" />
+    </projectListeners>
 </idea-plugin>
